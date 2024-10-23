@@ -1,5 +1,8 @@
 name: Build and Release
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -7,7 +10,6 @@ on:
 
 jobs:
   bump-version:
-    if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     name: Bump version and create changelog with commitizen
     steps:
@@ -20,14 +22,6 @@ jobs:
         uses: commitizen-tools/commitizen-action@0.21.0
         with:
           github_token: ${{ secrets.PAT }}
-
-  publish:
-    if: "startsWith(github.event.head_commit.message, 'bump:')"
-    runs-on: ubuntu-latest
-    name: Build and Publish
-    steps:
-      - name: Check out
-        uses: actions/checkout@v4
       - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
