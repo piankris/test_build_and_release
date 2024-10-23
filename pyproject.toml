@@ -9,3 +9,6 @@ dependencies = [
     "pandas>=2.2.3",
     "pydantic>=2.9.2",
 ]
+
+[tool.commitizen]
+version = "0.1.0"
