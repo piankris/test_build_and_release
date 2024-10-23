@@ -20,6 +20,7 @@ jobs:
         uses: commitizen-tools/commitizen-action@0.21.0
         with:
           github_token: ${{ secrets.PAT }}
+
   publish:
     if: "startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
@@ -34,9 +35,14 @@ jobs:
           cache-dependency-glob: "uv.lock"
       - name: Build package
         run: uv build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: dist/*.whl
       - name: Release
         uses: softprops/action-gh-release@v2.0.8
         with:
           files: dist/*
+          tag_name: ${{ env.REVISION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
